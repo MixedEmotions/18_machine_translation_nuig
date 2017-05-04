@@ -1,5 +1,5 @@
 PYVERSION=3.5
-NAME=07_machine_translation_nuig
+NAME=18_machine_translation_nuig
 REPO=mixedemotions
 VERSION=0.1.0
 PLUGINS= $(filter %/, $(wildcard */))

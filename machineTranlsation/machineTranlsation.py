@@ -1,19 +1,24 @@
-# -*- coding: utf-8 -*-
+
+# coding: utf-8
+
+# In[ ]:
+
+
 
 from __future__ import division
 import logging
 import os
 import xml.etree.ElementTree as ET
 
-from senpy.plugins import EmotionPlugin, SenpyPlugin
-from senpy.models import Results, EmotionSet, Entry, Emotion
+from senpy.plugins import SenpyPlugin
+from senpy.models import Results, Entry
 
 logger = logging.getLogger(__name__)
 
 # my packages
 
 
-class machineTranlsation(EmotionPlugin):
+class machineTranlsation(SenpyPlugin):
     
     def __init__(self, info, *args, **kwargs):
         super(machineTranlsation, self).__init__(info, *args, **kwargs)
@@ -61,32 +66,10 @@ class machineTranlsation(EmotionPlugin):
         entry = Entry()
         entry.nif__isString = text_input
 
-        emotionSet = EmotionSet()
-        emotionSet.id = "Emotions"
-
-        emotion1 = Emotion()        
-
-        for dimension in ['V','A','D']:
-            weights = [feature_text[i] for i in feature_text if (i != 'surprise')]
-            if not all(v == 0 for v in weights):
-                value = np.average([self.centroids[i][dimension] for i in feature_text if (i != 'surprise')], weights=weights) 
-            else:
-                value = 5.0
-            emotion1[self._centroid_mappings[dimension]] = value         
-
-        emotionSet.onyx__hasEmotion.append(emotion1)    
-        
-        for i in feature_text:
-            if(self.ESTIMATOR == 'SVC'):
-                emotionSet.onyx__hasEmotion.append(Emotion(onyx__hasEmotionCategory=self._wnaffect_mappings[i],
-                                    onyx__hasEmotionIntensity=feature_text[i]))
-            else:
-                if(feature_text[i] > 0):
-                    emotionSet.onyx__hasEmotion.append(Emotion(onyx__hasEmotionCategory=self._wnaffect_mappings[i]))
-        
-        entry.emotions = [emotionSet,]
+        entry['nif:translation'] = text_input
         
         response.entries.append(entry)
         # entry.language = lang
             
         return response
+
