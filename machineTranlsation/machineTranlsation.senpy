@@ -1,0 +1,30 @@
+{
+    "name": "machineTranlsation",
+    "module": "machineTranlsation",
+    "description": "Machine Tranlsation",
+    "author": "@micarc @vlaand",
+    "version": "0.1.0",
+
+    "sourcelanguage": {
+        "language": {
+            "aliases": ["sourcelanguage", "s"],
+            "required": true,
+            "options": ["en", "es"],
+            "default": "en"
+        }
+     },
+    "targetlanguage": {
+        "language": {
+            "aliases": ["targetlanguage", "t"],
+            "required": true,
+            "options": ["en", "es"],
+            "default": "es"
+        }
+     },
+    "requirements": [
+        "numpy>=1.8.2",
+        "scikit-learn>=0.14.1",
+        "senpy"
+        ]
+        
+}
