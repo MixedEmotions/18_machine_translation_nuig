@@ -1,20 +1,18 @@
 {
-    "name": "machineTranlsation",
-    "module": "machineTranlsation",
-    "description": "Machine Tranlsation",
+    "name": "machineTranslation",
+    "module": "machineTranslation",
+    "description": "Machine Translation",
     "author": "@micarc @vlaand",
     "version": "0.1.0",
 
-    "sourcelanguage": {
-        "language": {
+    "extra_params": {
+        "sourcelanguage": {
             "aliases": ["sourcelanguage", "s"],
             "required": true,
             "options": ["en", "es"],
             "default": "en"
-        }
-     },
-    "targetlanguage": {
-        "language": {
+        },    
+        "targetlanguage": {
             "aliases": ["targetlanguage", "t"],
             "required": true,
             "options": ["en", "es"],
