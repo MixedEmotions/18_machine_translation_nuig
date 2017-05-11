@@ -21,6 +21,7 @@ from collections import defaultdict
 
 import gzip
 from datetime import datetime 
+import subprocess
 
 
 
@@ -31,7 +32,7 @@ class machineTranslation(EmotionPlugin):
         self.name = info['name']
         self.id = info['module']
         self._info = info
-        local_path=os.path.dirname(os.path.abspath(__file__))
+        local_path = os.path.dirname(os.path.abspath(__file__))
    
         
 
@@ -46,33 +47,48 @@ class machineTranslation(EmotionPlugin):
             logger.info("%s plugin is being deactivated..." % self.name)
         except Exception:
             print("Exception in logger while reporting deactivation of %s" % self.name)
+    
+    
+    ## CUSTOM METHODS
+    
+    def _test_method(self):
+            result = subprocess.run(['ls', '-la'], stdout=subprocess.PIPE)
+            for x in result.stdout.decode("utf-8").split('\n'):
+                print(x) 
+    
+    def _translate(self, source_language_code, target_language_code, text_input):
+        
+        st = datetime.now() 
+        
+        command = "./translate.perl %s %s %s" % (source_language_code, target_language_code, text_input) 
+        logger.info("executing '%s'" % command)
+        result = subprocess.run( command.split(), stdout=subprocess.PIPE )
+        
+        logger.info("{} {}".format(datetime.now() - st, "translation is complete"))
+                                   
+        return result.stdout.decode("utf-8")
 
-    def analyse(self, **params):
+    def analyse(self, **params):      
         
         logger.debug("machine translation with params {}".format(params))
                 
         text_input = params.get("input", None)
-        self.__source = params.get("sourcelanguage", 'en')
-        self.__target = params.get("targetlanguage", 'es')
+        source_language_code = params.get("sourcelanguage", None)
+        target_language_code = params.get("targetlanguage", None)
         
-##------## PUT YOUR CODE HERE------------------------------- \  
-        
-        def _your_method(text):
-            return text.lower()
-        
-        text_output = _your_method(text_input)
-        
-##------## PUT YOUR CODE HERE------------------------------- \  
+##------## CODE HERE------------------------------- \                            
+        text_output = self._translate(source_language_code, target_language_code, text_input)                            
+##------## CODE HERE------------------------------- /  
             
         response = Results()
         entry = Entry()        
         
         entry.nif__isString = text_input  
-        entry['nif:predLang'] = self.__source
+        entry['nif:predLang'] = self.source_language_code
     
         translation = {}        
         translation['nif:isString'] = text_output
-        translation['nif:predLang'] = self.__target
+        translation['nif:predLang'] = self.target_language_code
         translation['nif:wasTranslatedFrom'] = entry.id     
         
         entry['nif:translation'] = [translation]
@@ -113,6 +129,12 @@ docker build -t 18_machine_translation_nuig .
 docker exec docker/whalesay /translate.perl 
 
 """
+
+
+# In[2]:
+
+# language_codes = "en|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sr|sv"
+# language_codes.split('|')
 
 
 # In[ ]:

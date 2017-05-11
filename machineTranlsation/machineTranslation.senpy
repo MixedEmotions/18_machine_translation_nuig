@@ -9,13 +9,13 @@
         "sourcelanguage": {
             "aliases": ["sourcelanguage", "s"],
             "required": true,
-            "options": ["en", "es"],
+            "options": ['en', 'bg', 'cs', 'da', 'de', 'el', 'es', 'et', 'fi', 'fr', 'ga', 'hr', 'hu', 'it', 'lt', 'lv', 'mt', 'nl', 'pl', 'pt', 'ro', 'sk', 'sl', 'sr', 'sv'],
             "default": "en"
         },    
         "targetlanguage": {
             "aliases": ["targetlanguage", "t"],
             "required": true,
-            "options": ["en", "es"],
+            "options": ['en', 'bg', 'cs', 'da', 'de', 'el', 'es', 'et', 'fi', 'fr', 'ga', 'hr', 'hu', 'it', 'lt', 'lv', 'mt', 'nl', 'pl', 'pt', 'ro', 'sk', 'sl', 'sr', 'sv'],
             "default": "es"
         }
      },
