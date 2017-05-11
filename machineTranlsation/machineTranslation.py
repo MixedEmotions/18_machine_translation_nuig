@@ -60,13 +60,18 @@ class machineTranslation(EmotionPlugin):
         
         st = datetime.now() 
         
-        command = "./translate.perl %s %s %s" % (source_language_code, target_language_code, text_input) 
+        command = './translate.perl %s %s "%s"' % (source_language_code, target_language_code, text_input)
         logger.info("executing '%s'" % command)
-        result = subprocess.run( command.split(), stdout=subprocess.PIPE )
+        
+        command = ['./translate.perl', str(source_language_code), str(target_language_code), str(text_input)]
+        
+        result = subprocess.run( command, stdout=subprocess.PIPE )
         
         logger.info("{} {}".format(datetime.now() - st, "translation is complete"))
-                                   
-        return result.stdout.decode("utf-8")
+        
+        result = result.stdout.decode("utf-8")    
+        
+        return result
 
     def analyse(self, **params):      
         
@@ -84,11 +89,11 @@ class machineTranslation(EmotionPlugin):
         entry = Entry()        
         
         entry.nif__isString = text_input  
-        entry['nif:predLang'] = self.source_language_code
+        entry['nif:predLang'] = source_language_code
     
         translation = {}        
         translation['nif:isString'] = text_output
-        translation['nif:predLang'] = self.target_language_code
+        translation['nif:predLang'] = target_language_code
         translation['nif:wasTranslatedFrom'] = entry.id     
         
         entry['nif:translation'] = [translation]

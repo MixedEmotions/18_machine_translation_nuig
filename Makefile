@@ -1,6 +1,6 @@
 PYVERSION=3.5
 NAME=18_machine_translation_nuig
-REPO=vlaand
+REPO=mixedemotions
 VERSION=latest
 PLUGINS= $(filter %/, $(wildcard */))
 
