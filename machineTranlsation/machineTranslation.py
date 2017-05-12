@@ -11,7 +11,7 @@ import os
 import xml.etree.ElementTree as ET
 
 from senpy.plugins import SenpyPlugin, EmotionPlugin
-from senpy.models import Results, Entry
+from senpy.models import Results, Entry, Error
 
 logger = logging.getLogger(__name__)
 
@@ -63,13 +63,15 @@ class machineTranslation(EmotionPlugin):
         command = './translate.perl %s %s "%s"' % (source_language_code, target_language_code, text_input)
         logger.info("executing '%s'" % command)
         
-        command = ['./translate.perl', str(source_language_code), str(target_language_code), str(text_input)]
-        
-        result = subprocess.run( command, stdout=subprocess.PIPE )
+#         command = ['./translate.perl', str(source_language_code), str(target_language_code), '"'+str(text_input)+'"']
+#         result = subprocess.run( command, stdout=subprocess.PIPE )    
+        command = './translate.perl£££%s£££%s£££"%s"' % (source_language_code, target_language_code, text_input)
+        result = subprocess.run( command.split('£££'), stdout=subprocess.PIPE )
         
         logger.info("{} {}".format(datetime.now() - st, "translation is complete"))
         
         result = result.stdout.decode("utf-8")    
+        logger.info("\n\n\n"+result+"\n\n\n")
         
         return result
 
@@ -81,8 +83,14 @@ class machineTranslation(EmotionPlugin):
         source_language_code = params.get("sourcelanguage", None)
         target_language_code = params.get("targetlanguage", None)
         
-##------## CODE HERE------------------------------- \                            
-        text_output = self._translate(source_language_code, target_language_code, text_input)                            
+##------## CODE HERE------------------------------- \ 
+        if source_language_code == target_language_code:
+            text_output = text_input
+        elif 'en' in [source_language_code, target_language_code]:
+            text_output = str(self._translate(source_language_code, target_language_code, text_input))
+        else:
+            return Error(message="cross_lingual_translation")
+            
 ##------## CODE HERE------------------------------- /  
             
         response = Results()
