@@ -89,7 +89,7 @@ class machineTranslation(EmotionPlugin):
         elif 'en' in [source_language_code, target_language_code]:
             text_output = str(self._translate(source_language_code, target_language_code, text_input))
         else:
-            return Error(message="cross_lingual_translation")
+            raise Error("Error: Unavailable language pair")
             
 ##------## CODE HERE------------------------------- /  
             
