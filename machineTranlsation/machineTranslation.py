@@ -40,6 +40,12 @@ class machineTranslation(EmotionPlugin):
         
         st = datetime.now()        
         logger.info("{} {}".format(datetime.now() - st, "active"))
+        
+        st = datetime.now()        
+        subprocess.run( ['wget','http://server1.nlp.insight-centre.org/docker/translate.perl','-O','translate.perl'])
+        subprocess.run( ['chmod','+x','translate.perl'])   
+        logger.info("{} {}".format(datetime.now() - st, "translation script downloaded"))
+        
         logger.info("%s plugin is ready to go!" % self.name)
         
     def deactivate(self, *args, **kwargs):
@@ -61,11 +67,11 @@ class machineTranslation(EmotionPlugin):
         st = datetime.now() 
         
         command = './translate.perl %s %s "%s"' % (source_language_code, target_language_code, text_input)
-        logger.info("executing '%s'" % command)
+        logger.info("executing '%s'" % command)       
         
-#         command = ['./translate.perl', str(source_language_code), str(target_language_code), '"'+str(text_input)+'"']
-#         result = subprocess.run( command, stdout=subprocess.PIPE )    
-        command = './translate.perl£££%s£££%s£££"%s"' % (source_language_code, target_language_code, text_input)
+#         command = './translate.perl£££%s£££%s£££"%s"' % (source_language_code, target_language_code, text_input)
+        command = ['./translate.perl', str(source_language_code), str(target_language_code), str(text_input)]
+        
         result = subprocess.run( command.split('£££'), stdout=subprocess.PIPE )
         
         logger.info("{} {}".format(datetime.now() - st, "translation is complete"))
@@ -84,6 +90,7 @@ class machineTranslation(EmotionPlugin):
         target_language_code = params.get("targetlanguage", None)
         
 ##------## CODE HERE------------------------------- \ 
+
         if source_language_code == target_language_code:
             text_output = text_input
         elif 'en' in [source_language_code, target_language_code]:
