@@ -58,11 +58,6 @@ class machineTranslation(EmotionPlugin):
     
     ## CUSTOM METHODS
     
-    def _test_method(self):
-            result = subprocess.run(['ls', '-la'], stdout=subprocess.PIPE)
-            for x in result.stdout.decode("utf-8").split('\n'):
-                print(x) 
-    
     def _translate(self, source_language_code, target_language_code, text_input):
         
         st = datetime.now() 
@@ -77,8 +72,7 @@ class machineTranslation(EmotionPlugin):
         
         logger.info("{} {}".format(datetime.now() - st, "translation is complete"))
         
-        result = result.stdout.decode("utf-8")    
-        logger.info("\n\n\n"+result+"\n\n\n")
+        result = result.stdout.decode("utf-8") 
         
         return result
 
