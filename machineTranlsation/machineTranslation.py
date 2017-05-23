@@ -42,8 +42,9 @@ class machineTranslation(EmotionPlugin):
         logger.info("{} {}".format(datetime.now() - st, "active"))
         
         st = datetime.now()        
-        subprocess.run( ['wget','http://server1.nlp.insight-centre.org/docker/translate.perl','-O','translate.perl'])
-        subprocess.run( ['chmod','+x','translate.perl'])   
+        subprocess.run(['rm','-f', 'translate.perl'])
+        subprocess.run( ['wget','http://server1.nlp.insight-centre.org/docker/translate.perl','-O','translate.perl'] )
+        subprocess.run( ['chmod','+x','translate.perl'] )   
         logger.info("{} {}".format(datetime.now() - st, "translation script downloaded"))
         
         logger.info("%s plugin is ready to go!" % self.name)
